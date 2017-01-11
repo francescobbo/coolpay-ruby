@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.test_files   = `git ls-files -- spec/*`.split("\n")
   s.require_path = 'lib'
 
+  s.add_dependency 'faraday', '~> 0.10.1'
+
   s.add_development_dependency 'rspec', '~> 3.5.0'
   s.add_development_dependency 'rubocop', '~> 0.46.0'
 end
