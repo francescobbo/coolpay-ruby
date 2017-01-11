@@ -2,19 +2,25 @@ PATH
   remote: .
   specs:
     coolpay (0.1.0)
-      faraday (~> 0.10.0)
+      faraday (~> 0.10.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.5.0)
+      public_suffix (~> 2.0, >= 2.0.2)
     ast (2.3.0)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
     faraday (0.10.1)
       multipart-post (>= 1.2, < 3)
+    hashdiff (0.3.2)
     multipart-post (2.0.0)
     parser (2.3.3.1)
       ast (~> 2.2)
     powerpack (0.1.1)
+    public_suffix (2.0.5)
     rainbow (2.2.1)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -36,7 +42,12 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
+    safe_yaml (1.0.4)
     unicode-display_width (1.1.2)
+    webmock (2.3.2)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
 
 PLATFORMS
   ruby
@@ -45,6 +56,7 @@ DEPENDENCIES
   coolpay!
   rspec (~> 3.5.0)
   rubocop (~> 0.46.0)
+  webmock (~> 2.3.2)
 
 BUNDLED WITH
    1.12.5
