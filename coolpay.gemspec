@@ -5,6 +5,7 @@ Gem::Specification.new do |s|
   s.name         = 'coolpay'
   s.version      = Coolpay::VERSION
   s.summary      = 'Ruby bindings to Coolpay API'
+  s.description  = 'Ruby bindings to Coolpay API - just for an interview'
   s.authors      = ['Francesco Boffa']
   s.email        = 'fra.boffa@gmail.com'
   s.homepage     = 'https://github.com/aomega08/coolpay'
