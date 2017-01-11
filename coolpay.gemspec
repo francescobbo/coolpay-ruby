@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 require 'coolpay/version'
 
 Gem::Specification.new do |s|
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files        = `git ls-files -- lib/*`.split("\n")
   s.test_files   = `git ls-files -- spec/*`.split("\n")
   s.require_path = 'lib'
-  
-  s.add_development_dependency 'rspec', '~> 3.5.0'
-end
 
+  s.add_development_dependency 'rspec', '~> 3.5.0'
+  s.add_development_dependency 'rubocop', '~> 0.46.0'
+end
