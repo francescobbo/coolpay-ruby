@@ -15,6 +15,13 @@ module Coolpay
       self.token = response[:body]['token']
     end
 
+    def find_recipient(name)
+      auth_token = token || login
+
+      response = raw_client.get 'recipients', { name: name }, auth_token
+      response[:body]['recipients']
+    end
+
     private
 
     def raw_client
