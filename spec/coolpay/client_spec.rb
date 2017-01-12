@@ -5,11 +5,9 @@ describe Coolpay::Client do
     context 'when the login is successful' do
       before do
         stub_request(:post, /\/login$/)
-                    .to_return({
-                      status: 200,
-                      body: { token: 'helloworld' }.to_json,
-                      headers: { 'Content-Type' => 'application/json' }
-                    })
+          .to_return(status: 200,
+                     body: { token: 'helloworld' }.to_json,
+                     headers: { 'Content-Type' => 'application/json' })
       end
 
       it 'responds with the authentication token' do
@@ -25,10 +23,8 @@ describe Coolpay::Client do
     context 'when the login fails' do
       before do
         stub_request(:post, /\/login$/)
-                .to_return({
-                  status: 400,
-                  body: { errors: 'Whoops' }.to_json
-                })
+          .to_return(status: 400,
+                     body: { errors: 'Whoops' }.to_json)
       end
 
       it 'raises an exception' do
@@ -54,7 +50,8 @@ describe Coolpay::Client do
       it 'authenticates for a token and does the request' do
         expect(subject).to receive(:login).and_return('456-123-789')
 
-        request = stub_request(:get, /.+/).with(headers: { 'Authorization' => 'Bearer 456-123-789' })
+        request = stub_request(:get, /.+/)
+                  .with(headers: { 'Authorization' => 'Bearer 456-123-789' })
         subject.find_recipient('francesco')
 
         expect(request).to have_been_requested
@@ -64,12 +61,10 @@ describe Coolpay::Client do
     it 'returns an array of matched recipients' do
       allow(subject).to receive(:login).and_return('456-123-789')
 
-      matching = [ { 'name' => 'Francesco' }, { 'name' => 'Jason' } ]
+      matching = [{ 'name' => 'Francesco' }, { 'name' => 'Jason' }]
       stub_request(:get, /recipients\?name=francesco/)
-                    .to_return({
-                      body: { recipients: matching }.to_json,
-                      headers: { 'Content-Type' => 'application/json' }
-                    })
+        .to_return(body: { recipients: matching }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
       result = subject.find_recipient('francesco')
 
       expect(result).to eq matching

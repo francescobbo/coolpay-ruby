@@ -9,7 +9,7 @@ module Coolpay
     end
 
     def login
-      response = raw_client.post 'login', { username: @username, apikey: @apikey }
+      response = raw_client.post 'login', username: @username, apikey: @apikey
       raise Errors::InvalidCredentials unless response[:status] == 200
 
       self.token = response[:body]['token']
