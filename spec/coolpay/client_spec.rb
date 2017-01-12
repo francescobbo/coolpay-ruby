@@ -4,7 +4,7 @@ describe Coolpay::Client do
   describe '#login' do
     context 'when the login is successful' do
       before do
-        stub_request(:post, /\/login$/)
+        stub_request(:post, %r{/login$})
           .to_return(status: 200,
                      body: { token: 'helloworld' }.to_json,
                      headers: { 'Content-Type' => 'application/json' })
@@ -22,15 +22,15 @@ describe Coolpay::Client do
 
     context 'when the login fails' do
       before do
-        stub_request(:post, /\/login$/)
+        stub_request(:post, %r{/login$})
           .to_return(status: 400,
                      body: { errors: 'Whoops' }.to_json)
       end
 
       it 'raises an exception' do
-        expect {
+        expect do
           subject.login
-        }.to raise_error Coolpay::Errors::InvalidCredentials
+        end.to raise_error Coolpay::Errors::InvalidCredentials
       end
     end
   end

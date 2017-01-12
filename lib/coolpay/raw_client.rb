@@ -30,7 +30,7 @@ module Coolpay
     private
 
     def parse_response(response)
-      if response.headers['Content-Type'] =~ /application\/json/
+      if response.headers['Content-Type'] =~ %r{application/json}
         body = response.body.empty? ? {} : JSON.parse(response.body)
       else
         body = response.body
