@@ -19,7 +19,12 @@ describe Coolpay::RawClient do
     end
 
     it 'responds with the status and parsed JSON body' do
-      stub_request(:any, /.*/).to_return(status: 200, body: '{"token":"0123456789abcdef"}')
+      stub_request(:any, /.*/).to_return({
+        status: 200,
+        body: '{"token":"0123456789abcdef"}',
+        headers: { 'Content-Type' => 'application/json' }
+      })
+
       response = subject.post('login')
       expect(response).to eq({ status: 200, body: { 'token' => '0123456789abcdef' } })
     end
