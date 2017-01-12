@@ -8,11 +8,20 @@ module Coolpay
     end
 
     def post(path, body = {})
-      connection.post do |req|
+      response = connection.post do |req|
         req.url "/api/#{path}"
         req.headers['Content-Type'] = 'application/json'
         req.body = body.to_json
       end
+
+      parse_response(response)
     end
+
+    private
+
+    def parse_response(response)
+      body = response.body.empty? ? {} : JSON.parse(response.body)
+      { status: response.status, body: body }
+    end      
   end
 end
