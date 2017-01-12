@@ -7,11 +7,11 @@ module Coolpay
       @connection ||= Faraday.new(url: 'https://coolpay.herokuapp.com')
     end
 
-    def post(path, params = {})
+    def post(path, body = {})
       connection.post do |req|
         req.url "/api/#{path}"
         req.headers['Content-Type'] = 'application/json'
-        req.body = params.to_json
+        req.body = body.to_json
       end
     end
   end
