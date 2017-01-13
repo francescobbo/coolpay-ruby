@@ -22,6 +22,15 @@ module Coolpay
       response[:body]['recipients']
     end
 
+    def create_recipient(name)
+      auth_token = token || login
+
+      response = raw_client.post 'recipients', { recipient: { name: name } }, auth_token
+      raise Errors::ApiError.new(response) unless response[:status] == 201
+
+      response[:body]['recipient']
+    end
+
     private
 
     def raw_client
