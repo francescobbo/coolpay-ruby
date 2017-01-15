@@ -71,6 +71,42 @@ describe Coolpay::Client do
     end
   end
 
+  describe '#find_recipient' do
+    context 'when the client is authenticated' do
+      before { subject.token = '789-456-123' }
+
+      it 'sends an authenticated request to the endpoint' do
+        request = stub_request(:get, /payments/)
+        subject.list_payments
+        expect(request).to have_been_requested
+      end
+    end
+
+    context 'when the client is not authenticated yet' do
+      it 'authenticates for a token and does the request' do
+        expect(subject).to receive(:login).and_return('456-123-789')
+
+        request = stub_request(:get, /.+/)
+                  .with(headers: { 'Authorization' => 'Bearer 456-123-789' })
+        subject.list_payments
+
+        expect(request).to have_been_requested
+      end
+    end
+
+    it 'returns an array of payments' do
+      allow(subject).to receive(:login).and_return('456-123-789')
+
+      list = [{ 'amount' => 50 }, { 'amount' => 100 }]
+      stub_request(:get, /payments/)
+        .to_return(body: { payments: list }.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+      result = subject.list_payments
+
+      expect(result).to eq list
+    end
+  end
+
   describe '#create_recipient' do
     context 'when the client is authenticated' do
       before { subject.token = '789-456-123' }
@@ -107,6 +143,45 @@ describe Coolpay::Client do
       result = subject.create_recipient('francesco')
 
       expect(result).to eq data['recipient']
+    end
+  end
+
+  describe '#create_payment' do
+    context 'when the client is authenticated' do
+      before { subject.token = '789-456-123' }
+
+      it 'sends an authenticated request to the endpoint' do
+        request = stub_request(:post, /payments$/)
+                  .to_return(status: 201)
+        subject.create_payment(100, 'GBP', '123')
+        expect(request).to have_been_requested
+      end
+    end
+
+    context 'when the client is not authenticated yet' do
+      it 'authenticates for a token and does the request' do
+        expect(subject).to receive(:login).and_return('456-123-789')
+
+        request = stub_request(:post, /.+/)
+                  .with(headers: { 'Authorization' => 'Bearer 456-123-789' })
+                  .to_return(status: 201)
+        subject.create_payment(100, 'GBP', '123')
+
+        expect(request).to have_been_requested
+      end
+    end
+
+    it 'returns the created recipient' do
+      allow(subject).to receive(:login).and_return('456-123-789')
+
+      data = { 'recipient' => { 'amount' => 100, 'currency' => 'GBP', 'recipient_id' => '123' } }
+      stub_request(:post, /payments$/)
+        .to_return(status: 201,
+                   body: data.to_json,
+                   headers: { 'Content-Type' => 'application/json' })
+      result = subject.create_payment(100, 'GBP', '123')
+
+      expect(result).to eq data['payment']
     end
   end
 end
