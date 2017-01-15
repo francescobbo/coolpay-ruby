@@ -28,19 +28,20 @@ module Coolpay
     end
 
     def list_payments
-      response = raw_client.get 'payments', { }, token
+      response = raw_client.get 'payments', {}, token
       response[:body]['payments']
     end
 
     def create_payment(amount, currency, recipient_id)
-      response = raw_client.post('payments', {
+      payment = {
         payment: {
           amount: amount,
           currency: currency,
           recipient_id: recipient_id
         }
-      }, token)
+      }
 
+      response = raw_client.post('payments', payment, token)
       raise Errors::ApiError.new(response) unless response[:status] == 201
 
       response[:body]['payment']
